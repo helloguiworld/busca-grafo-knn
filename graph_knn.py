@@ -14,6 +14,7 @@ def vetor_hash(base, x=0, y=0):
     """Hash para vértices em um plano 2d."""
     return x * pow(base, 1) + y * pow(base, 0)
 
+
 def teste_insercao_nova_aresta(vertice, limite, index, distancia):
     """Testa se nova aresta deve ser criada, conectando dois pontos."""
     # Testa se ja atingiu o limite de arestas ou se a distancia do novo ponto é menor que a distancia do ponto mais distante
@@ -32,11 +33,14 @@ class Graph_knn():
         """Inicializa as estruturas base do grafo."""
         print(f"Criando grafo knn com {v} vertices, cada um deles com {k} arestas")
         print()
+
+        self.v = v
+        self.k = k
+
         # Inicializa o grafo vazio
-        grafo = []
-        xs = []
-        ys = []
+        vertices = []
         hashs = []
+
         porcentagem = 0
         parte = v/100
         progresso = 0
@@ -49,21 +53,17 @@ class Graph_knn():
                 hash = vetor_hash(v+1, x, y)
                 # print(f"ponto: ({x}, {y}) - hash: {hash}")
                 if(hash not in hashs): break
-                else: print("Vértice já existente. Gera coordenadas novamente.")
-
+                else: print("Gerou vértice já existente. Gera coordenadas novamente.")
             
             if(i >= progresso):
-                print(f"Criação dos vértices {porcentagem}% concluído...", i)
-                porcentagem += 1
+                print(f"Criação dos vértices {porcentagem:.0f}% concluído...")
+                porcentagem = ((i+1)/v)*100
                 progresso += parte
             
             hashs.append(hash)
-            grafo.append(Vertice(x, y))
-            xs.append(x)
-            ys.append(y)
+            vertices.append(Vertice(x, y))
 
-        print(f"Criação dos vértices {porcentagem}% concluído...")
-        print()
+        print(f"Criação dos vértices {porcentagem:.0f}% concluído...")
         print()
 
         porcentagem = 0
@@ -73,41 +73,39 @@ class Graph_knn():
         # Acha as distâncias entre todos os vértices
         for i in range(0, v):
             for j in range(i+1, v):
-                distancia = distancia_euclidiana(grafo[i].get_coordenadas(), grafo[j].get_coordenadas())
+                distancia = distancia_euclidiana(vertices[i].get_coordenadas(), vertices[j].get_coordenadas())
                 
-                teste_insercao_nova_aresta(grafo[i], k, j, distancia)
-                teste_insercao_nova_aresta(grafo[j], k, i, distancia)
-            
+                teste_insercao_nova_aresta(vertices[i], k, j, distancia)
+                teste_insercao_nova_aresta(vertices[j], k, i, distancia)
             
             if(i >= progresso):
-                print(f"Definição das arestas {porcentagem}% concluído...", i)
-                porcentagem += 1
+                print(f"Definição das arestas {porcentagem:.0f}% concluído...")
+                porcentagem = ((i+1)/v)*100
                 progresso += parte
 
-        print(f"Definição das arestas {porcentagem}% concluído...")
-        self.grafo = grafo
-        self.exibe_grafo()
-        print("Grafo criado!")
-        # stdscr = curses.initscr()
-
-        # curses.beep()
+        print(f"Definição das arestas {porcentagem:.0f}% concluído...")
         print()
 
-        # for vertice in grafo:
-        #     # print(vertice.get_x(), vertice.get_y())
-        #     plt.plot(vertice.get_x(), vertice.get_y(),'o')
+        self.vertices = vertices
+        self.exibe_grafo()
+        print()
+        print("Grafo criado!")
+        print()
 
-        # print(xs)
-        # print(ys)
+    
+    def get_v(self):
+        return self.v
+    
 
-        print("Preparando ferramenta gráfica.")
-        plt.plot(xs, ys,'o')
-        plt.axis([0-v*0.05, v*1.05, 0-v*0.05, v*1.05])
-        print("Em instantes o grafo será plotado...")
-        plt.show()
-        print("Ferramenta gráfica encerrada.")
-        
+    def get_k(self):
+        return self.k
+
+
+    def get_vertices(self):
+        return self.vertices
+
 
     def exibe_grafo(self):
-        for vertice in self.grafo:
-            vertice.exibe_vertice()
+        for i in range(0, len(self.vertices)):
+            print(f"{i} - ", end='')
+            self.vertices[i].exibe_vertice()
