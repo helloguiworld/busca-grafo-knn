@@ -1,4 +1,14 @@
 
+        # grafo.append(Vertice(4, 10))
+        # grafo.append(Vertice(9, 8))
+        # grafo.append(Vertice(1, 5))
+        # grafo.append(Vertice(6, 5))
+        # grafo.append(Vertice(7, 3))
+        # grafo.append(Vertice(0, 1))
+        # grafo.append(Vertice(5, 2))
+        # grafo.append(Vertice(8, 3))
+        # grafo.append(Vertice(7, 9))
+        # grafo.append(Vertice(6, 9))
 
 
                 # if(len(vertices_proximos) < 3):
