@@ -2,6 +2,9 @@ from matplotlib import pyplot as plt
 from graph_knn import Graph_knn
 from busca_largura import busca_largura
 from busca_profundidade import busca_profundidade
+from busca_best_first import busca_best_first
+from busca_A import busca_A
+from busca_Ax import busca_Ax
 
 def pega_inicio_fim(limite_inferior, limite_superior):
     """Recebe valores de início e fim e os resotna no formato [inicio, fim]."""
@@ -54,8 +57,8 @@ def plotar_grafo(grafo, caminho=[], ordenacao="Ordenação não especificada"):
 def main():
     print('Grafo KNN')
 
-    v = 10000
-    k = 5
+    v = 10
+    k = 3
 
     grafo_knn = Graph_knn(v, k)
 
@@ -66,6 +69,15 @@ def main():
 
     caminho = busca_profundidade(grafo_knn, inicio, fim)
     plotar_grafo(grafo_knn, caminho, "Busca em profundidade")
+
+    caminho = busca_best_first(grafo_knn, inicio, fim)
+    plotar_grafo(grafo_knn, caminho, "Busca best first")
+
+    caminho = busca_A(grafo_knn, inicio, fim)
+    plotar_grafo(grafo_knn, caminho, "Busca A")
+
+    caminho = busca_Ax(grafo_knn, inicio, fim)
+    plotar_grafo(grafo_knn, caminho, "Busca A*")
 
 
 if(__name__ == "__main__"):
